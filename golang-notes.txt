@@ -1,0 +1,166 @@
+################################################################################
+#                                  COMMANDS				       #
+################################################################################
+go env -w [GO_ENV_VAR]=[VAL] 				#create/modify value of Go Environment Variable
+
+go mod init [package_path&name] 			#enable dependencies tracking
+go get #package#	
+go run [go_file] 					#execute this on the package that has "main"
+							#run the package that has main
+go mod edit -replace=[current_value]=[new_value]
+go mod tidy 						#updates the content of go.mod
+go test #-v#
+go build		#execute this on the package that has "main"
+			#create an exe file in the %CD%
+go install		#execute this on the package that has "main"
+			#create an exe file in the GOBIN ENV VAR
+
+
+################################################################################
+#                                  SYNTAX				       #
+################################################################################
+PACKAGE DECLARATION
+package #package_name#		#declare package name to collect related function
+#package main			#declare the package as main package
+				#(only package that can be executed using 'go run')
+
+IMPORTING PACKAGE
+import (
+	"#go_package#"
+	"#external_package#"
+)
+
+DEFINING FUNCTION
+func #function_name#(#par1_name# #par1_datatype#, #parN_name# #parN_datatype#) (#return_datatype(s)#){
+	#statement(s)#
+	return #return_value(s)# #separated by comma (,)
+}
+
+ASSIGNMENT STATEMENT
+var #var_name# #data_type# = #val/expr#		#explicit declaration
+var #var_name# = #val/expr#			#implicit declaration
+#var_name# := #val/expr#
+
+IF STATEMENT
+if #condition# {		#logical condition ==, !=, <=, >= 
+	#statement(s)#
+}
+
+
+FOR LOOP STATEMENT
+#1 RANGE #
+for _, #var_name# := range #ref_var_name# {
+	#statement(s)#
+}
+
+#2 ITERATIVE #
+for #var_name# := #initial_val#; #termination_condition#, #iteration_statement# {
+	#statement(s)#
+}
+
+
+#################################################################################
+#                              STRING FORMATTING			       	#
+#			(https://golang.org/pkg/fmt)				#
+#################################################################################
+%v		#will be displayed in a default format
+%s		#will be displayed as string
+%d		#will be displayed as decimal number
+%x		#will be displayed as hex number
+%o		#will be displayed as octal number
+%f		#will be displayed as float
+%e		#will be displayed as scientific notation
+%T		#displays the Data type of the variable
+
+Frequently Used FUNCTIONS
+Sprintf()
+Println()
+
+################################################################################
+#                                  DATA TYPES				       #
+################################################################################
+uint#bit#		#unsigned integer
+
+ARRAY
+#array_name# := [#elem_no#]#data_type#{#val1#, #valn#}
+
+SLICE/LIST
+#slice_name# := make([]#data_type#, #elem_no#)
+
+DICTIONARY/HASH MAP
+#map_name# := make(map[#key_datatype#]#val_datatype#)
+
+
+################################################################################
+#                                  DATA STRUCTURE			       #
+################################################################################
+type #structure_name# struct {
+	#field_name1# #datatype#
+	#field_namen# #datatype#
+}
+
+func (#var_name# *#structure#) #method#() #return_var(s)# {
+	#statements#
+	return #value#
+}
+
+
+
+#################################################################################
+#                                TEST CASES				       	#
+#			(https://golang.org/pkg/testing)			#
+#################################################################################
+import {
+	"testing"
+}
+
+func #testItemName#(t *testing.T){
+	#statement(s)#
+	if #fail_condition# {
+		t.Fatalf(`#string_format#`)
+	}
+}
+
+
+#################################################################################
+#                                WEB SERVICE				       	#
+#################################################################################
+import {
+	"net/http"
+	"html/template"
+	"fmt"
+	"log"
+}
+
+func #handler#(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "#html_content#", #vars_used#)
+	#OR#
+	t, _ := template.ParseFiles("#html_file#")
+	t.Execute(w, #context#)	
+}
+
+func main() {
+	http.HandleFunc("/#handler_url/", #handler_function#)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+################################################################################
+#                               IMPORTANT NOTES				       #
+################################################################################
+1. The number of return values on a function should be equal to the number of
+	variables in the left side
+e.g.: message, err := greetings.Hello("")
+e.g.: message, _ := greetings.Hello("Mark")
+#greetings.Hello have two return values
+#you can assign a non-important value into an underscore (_)
+
+2. Always use the declared variables
+
+3. Using/Invoking struct
+e.g.: &#struct_name#{#par1#: #val1#, #parN#: #valN#}
+
+4. Using Pointer (*)
+e.g.: func editHander(w http.ResponseWriter, r *http.Request}
+
+5. Redirecting to another Page
+e.g.: http.Redirect(w, r, "/edit/"+title, http.StatusFound)
